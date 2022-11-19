@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 
+st.set_page_config(page_title='Player Recommend', initial_sidebar_state='auto')
 
 @st.cache(show_spinner=False)
 def getData():
@@ -56,7 +57,7 @@ def getRecommendations(metric, df_type, league='All', comparison='All positions'
 
     # comparison filtering
     if comparison == 'Same position' and df_type == 'outfield':
-        q_pos = list(df[df['Player'] == query.split(' (')[0]].Pos)[0]
+        q_pos = list(df[df['Player'] == query.split('(')[0]].Pos)[0]
         df_res = df_res[df_res['Pos'] == q_pos]
 
     # league filtering
