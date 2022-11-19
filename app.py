@@ -28,7 +28,7 @@ st.title('Football player recommendation based on 2021-2022 statistics')
 st.subheader("Created by [**Rohan Choudhary**](%s)" % 'https://www.linkedin.com/in/rohanchoudhary12/')
 st.markdown("***")
 
-col1, col2, col3 = st.columns([1, 2.2, 0.8])
+col1, col2 = st.columns([1, 2.2])
 
 with col1:
     radio = st.radio('Player type', ['Outfield players', 'Goalkeepers'])
@@ -41,12 +41,7 @@ with col2:
     query = st.selectbox('Player name', players, index=goat_index or 0,
                          help='Search player as a name or from a specific team without deleting any character')
 
-with col3:
-    foot = st.selectbox('Preferred foot', ['All', 'Automatic', 'Right', 'Left'],
-                        help='Automatic matches the same foot as searched player')
-
-
-def getRecommendations(metric, df_type, league='All', foot='All', comparison='All positions', age=age_default,
+def getRecommendations(metric, df_type, league='All', comparison='All positions', age=age_default,
                        count=10):
 
     df_res = df.iloc[:, [1, 3, 5, 6]].copy()
@@ -73,17 +68,6 @@ def getRecommendations(metric, df_type, league='All', foot='All', comparison='Al
         df_res = df_res[(df_res['Age'] >= age[0]) & (df_res['Age'] <= age[1])]
     df_res[['Age']] = df[['Age']].astype('int')
 
-    # preferred foot filtering
-    if foot == 'All' or df_type == 'gk':
-        pass
-    elif foot == 'Automatic':
-        query_foot = df['Foot'][player_id[query]]
-        df_res = df_res[df_res['Foot'] == query_foot]
-    elif foot == 'Left':
-        df_res = df_res[df_res['Foot'] == 'left']
-    else:
-        df_res = df_res[df_res['Foot'] == 'right']
-
     # returning the final result
     df_res = df_res.iloc[:count, :].reset_index(drop=True)
     df_res.index = df_res.index + 1
@@ -109,12 +93,15 @@ with col7:
 
 sims = engine[query]
 df_type = 'outfield' if len(df) > 2000 else 'gk'
-recommendations = getRecommendations(sims, df_type=df_type, foot=foot, league=league, comparison=position, age=age, count=count)
+recommendations = getRecommendations(sims, df_type=df_type, league=league, comparison=position, age=age, count=count)
 st.table(recommendations)
 
 st.markdown("***")
 
-st.write("All the FIFA, PES, DLS and other such games enjoyer, are you in a situation where you can't purchase your favourite player or the player that will complete your team puzzle? Well you can look for their alternatives here with 113 different features including position, goals, assists, goal and assists, all these stats per 90, tackles won, passes complete etc.")
+st.write("All the FIFA, PES, DLS and other such games enjoyer, are you in a situation where you can't "
+         "purchase your favourite player or the player that will complete your team puzzle? Well you can "
+         "look for their alternatives here with 113 different features including position, goals, assists, "
+         "goal and assists, all these stats per 90, tackles won, passes complete etc.")
 st.write("**Tech Involved: Machine Learning, PCA, Cosine Similarity.**")
 st.write("*Connect with me on linkedin if you want to contribute in this project.*")
 st.write("[Data credits](%s)" %'https://fbref.com/en/')
