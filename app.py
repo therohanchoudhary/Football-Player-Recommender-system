@@ -35,8 +35,8 @@ with col2:
     df, player_id, engine = outfield_data if radio == 'Outfield players' else gk_data
     players = sorted(list(player_id.keys()))
     age_default = (min(df.Age), max(df.Age))
-    goat_index = [players.index(player) for player in players if player.startswith('Cristiano Ronaldo')][0]
-    query = st.selectbox('Player name', players, index=goat_index,
+    goat_index = [players.index(player) for player in players if player.startswith('Cristiano Ronaldo') or player.startswith('Manuel Neuer')][0]
+    query = st.selectbox('Player name', players, index=goat_index or 0,
                          help='Search player as a name or from a specific team without deleting any character')
 
 with col3:
