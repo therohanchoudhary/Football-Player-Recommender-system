@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 
 
-@st.cache(show_spinner=False)
+@st.cache(show_spinner=True)
 def getData():
     outfield_df = pd.read_pickle('Data/outfield.pickle')
     gk_df = pd.read_pickle('Data/goalkeeper.pickle')
@@ -47,7 +47,6 @@ with col3:
 def getRecommendations(metric, df_type, league='All', foot='All', comparison='All positions', age=age_default,
                        count=10):
 
-    print(list(df.columns))
     df_res = df.iloc[:, [1, 3, 4, 5, 6]].copy()
 
     df_res['Player'] = list(player_id.keys())
@@ -111,4 +110,9 @@ df_type = 'outfield' if len(df) > 2000 else 'gk'
 recommendations = getRecommendations(sims, df_type=df_type, foot=foot, league=league, comparison=position, age=age, count=count)
 st.table(recommendations)
 
+st.markdown("***")
+
+st.write("All the FIFA, PES, DLS and other such games enjoyer, are you in a situation where you can't purchase your favourite player or the player that will complete your team puzzle? Well you can look for their alternatives here with 113 different features including position, goals, assists, goal and assists, all these stats per 90, tackles won, passes complete etc.")
+st.write("**Tech Involved: Machine Learning, PCA, Cosine Similarity.**")
+st.write("*Connect with me on linkedin if you want to contribute in this project.*")
 st.write("[Data credits](%s)" %'https://fbref.com/en/')
