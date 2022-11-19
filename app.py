@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 
 
-@st.cache(show_spinner=True)
+@st.cache(show_spinner=False)
 def getData():
     outfield_df = pd.read_pickle('Data/outfield.pickle')
     gk_df = pd.read_pickle('Data/goalkeeper.pickle')
@@ -21,7 +21,9 @@ def getData():
     return [outfield_df, outfield_id, outfield_engine], [gk_df, gk_id, gk_engine]
 
 
-outfield_data, gk_data = getData()
+with st.spinner(text="Fetching data"):
+    outfield_data, gk_data = getData()
+
 st.title('Football player recommendation based on 2021-2022 statistics')
 st.subheader("Created by [**Rohan Choudhary**](%s)" % 'https://www.linkedin.com/in/rohanchoudhary12/')
 st.markdown("***")
@@ -47,7 +49,7 @@ with col3:
 def getRecommendations(metric, df_type, league='All', foot='All', comparison='All positions', age=age_default,
                        count=10):
 
-    df_res = df.iloc[:, [1, 3, 4, 5, 6]].copy()
+    df_res = df.iloc[:, [1, 3, 5, 6]].copy()
 
     df_res['Player'] = list(player_id.keys())
     df_res.insert(1, 'Similarity', metric)
